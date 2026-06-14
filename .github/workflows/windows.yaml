@@ -36,10 +36,7 @@ jobs:
         run: cmake --build build --config Release
 
       - name: Deploy Qt dependencies
-        run: >
-          & "${{ env.Qt6_DIR }}/../../bin/windeployqt"
-          --release --no-translation
-          build/Release/DeskToDo.exe
+        run: windeployqt --release --no-translation build/Release/DeskToDo.exe
 
       - name: Copy runtime assets
         run: |
