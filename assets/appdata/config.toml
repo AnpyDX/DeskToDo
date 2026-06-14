@@ -1,0 +1,46 @@
+[settings]
+default-content = "Empty TODO"
+
+[theme.window]
+background = "#202020"
+
+[theme.scrollbar]
+width = "6px"
+border-radius = "2px"
+background = "#808080"
+background-hover = "#808080"
+background-pressed = "#808080"
+
+[theme.button]
+font-size = "11px"
+font-color = "white"
+
+border-radius = "4px"
+
+background = "#3C3C3C"
+background-hover = "#505050"
+background-pressed = "#2A2A2A"
+
+[theme.item]
+font-size = "12px"
+font-color = "white"
+font-color-completed = "gray"
+
+border-radius = "4px"
+
+background = "#2B2B2B"
+
+# NOTE:
+# checker-color-0: Checker's outer circle color.
+# checker-color-1: Checker's background color.
+# checker-color-2: Checker's tick color.
+
+checker-empty-color-0 = "#D1D1D1"
+
+checker-hover-color-0 = "#D1D1D1"
+checker-hover-color-1 = "transparent"
+checker-hover-color-2 = "#D1D1D1"
+
+checker-done-color-0 = "#8BD3CE"
+checker-done-color-1 = "#8BD3CE"
+checker-done-color-2 = "#363E3D"

@@ -1,0 +1,72 @@
+name: Build for Windows
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ">=4.0"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.11.1'
+          arch: 'win64_msvc2022_64'
+          cache: true
+
+      - name: Configure CMake
+        run: >
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}/../../.."
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Deploy Qt dependencies
+        run: >
+          & "${{ env.Qt6_DIR }}/../../bin/windeployqt"
+          --release --no-translation
+          build/Release/DeskToDo.exe
+
+      - name: Copy runtime assets
+        run: |
+          if (Test-Path assets/appdata) {
+            Copy-Item -Path assets/appdata -Destination build/Release/appdata -Recurse -Force
+          }
+
+      - name: Extract version from tag
+        id: version
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          if ($tag.StartsWith("v")) {
+            $version = $tag.Substring(1)
+          } else {
+            $version = $tag
+          }
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Package artifact
+        run: >
+          Compress-Archive -Path build/Release/*
+          -DestinationPath "desktodo-${{ steps.version.outputs.version }}-windows-amd64.zip"
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "desktodo-${{ steps.version.outputs.version }}-windows-amd64.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
