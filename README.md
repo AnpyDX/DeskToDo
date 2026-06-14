@@ -21,8 +21,6 @@ A lightweight desktop TODO reminder.
 - CMake 4.0+
 - Compiler with C++20 support
 
-> NOTE: Windows users should specify Qt SDK in `CMakeLists.txt`.
-
 ### Compilation
 
 Run following commands to start compiling for executable:
@@ -31,6 +29,8 @@ Run following commands to start compiling for executable:
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 ```
+
+> NOTE: Windows users should specify Qt6-SDK path by `-DCMAKE_PREFIX_PATH=YOUR_QT_SDK_PATH`.
 
 After a successful build, copy the `assets/appdata` directory into the same folder as the compiled executable.
 
